@@ -1,16 +1,17 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Aplicativo());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class Aplicativo extends StatelessWidget {
+  Aplicativo({Key? key}) : super(key: key);
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+  bool _mostrarSenha = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: 24), // acompanha + que o /n
+              horizontal: 24,
+            ),
             child: Column(
               children: [
                 Row(
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Spacer(), // ocupa todo o espaço máx disponível vertical (column) ou horizontal (row)
+                const Spacer(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -66,12 +68,12 @@ class MyApp extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-                    _borda(_emailController, 'Digite seu e-mail'),
+                    _bordaEmail(_emailController, 'Digite seu e-mail'),
                     const SizedBox(height: 20),
-                    _borda(_senhaController, 'Digite sua senha',
-                        essasenha: true),
+                    _bordaSenha(_senhaController, 'Digite sua senha'),
                     const SizedBox(height: 20),
                     _criarBotaoEsqueciSenha(),
+                    const SizedBox(height: 20),
                     _criarBotao('ENTRAR', const Color.fromARGB(255, 0, 105, 55),
                         () {
                       print('Entrar Clicado');
@@ -87,23 +89,48 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget _borda(TextEditingController controller, String label,
-      {bool essasenha = false}) {
+  Widget _bordaEmail(TextEditingController controller, String label) {
+    return _bordaa(
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _bordaSenha(TextEditingController controller, String label) {
+    return _bordaa(
+      child: TextField(
+        controller: controller,
+        obscureText: !_mostrarSenha,
+        decoration: InputDecoration(
+          labelText: label,
+          border: InputBorder.none,
+          suffixIcon: IconButton(
+            icon: Icon(_mostrarSenha ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(() {
+                _mostrarSenha = !_mostrarSenha;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _bordaa({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade500),
-        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey.shade600),
+        borderRadius: BorderRadius.circular(4.0),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: TextField(
-          controller: controller,
-          obscureText: essasenha,
-          decoration: InputDecoration(
-            labelText: label,
-            border: InputBorder.none,
-          ),
-        ),
+        child: child,
       ),
     );
   }
@@ -156,4 +183,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  void setState(Null Function() param0) {}
 }
