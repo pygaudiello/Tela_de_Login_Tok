@@ -3,63 +3,67 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(Aplicativo());
+  runApp(const Aplicativo());
 }
 
-class Aplicativo extends StatelessWidget {
-  Aplicativo({Key? key}) : super(key: key);
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _senhaController = TextEditingController();
-  bool _mostrarSenha = false;
+class TelaLogin extends StatefulWidget {
+  const TelaLogin({Key? key}) : super(key: key);
 
   @override
+  State<TelaLogin> createState() => _TelaLoginState();
+}
+
+class _TelaLoginState extends State<TelaLogin> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+  bool _essasenha = true;
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: TextButton(
-                        onPressed: () {
-                          print('Clicado');
-                        },
-                        child: const Text(
-                          'CADASTRE-SE',
-                          style: TextStyle(
-                            fontFamily: 'Margem',
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 0, 105, 55),
-                          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: TextButton(
+                      onPressed: () {
+                        print('Clicado');
+                      },
+                      child: const Text(
+                        'CADASTRE-SE',
+                        style: TextStyle(
+                          fontFamily: 'Margem',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 0, 105, 55),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Entrar',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: 'Margem',
-                        fontWeight: FontWeight.w500,
-                      ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Entrar',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontFamily: 'Margem',
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                  ),
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Text(
                       'Acesse agora sua conta para acompanhar seus pedidos, ter ofertas exclusivas e muito mais.',
                       style: TextStyle(
                         fontSize: 16,
@@ -67,22 +71,22 @@ class Aplicativo extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20),
-                    _bordaEmail(_emailController, 'Digite seu e-mail'),
-                    const SizedBox(height: 20),
-                    _bordaSenha(_senhaController, 'Digite sua senha'),
-                    const SizedBox(height: 20),
-                    _criarBotaoEsqueciSenha(),
-                    const SizedBox(height: 20),
-                    _criarBotao('ENTRAR', const Color.fromARGB(255, 0, 105, 55),
-                        () {
-                      print('Entrar Clicado');
-                    }),
-                  ],
-                ),
-                const Spacer(flex: 2),
-              ],
-            ),
+                  ),
+                  const SizedBox(height: 20),
+                  _bordaEmail(_emailController, 'Digite seu e-mail'),
+                  const SizedBox(height: 20),
+                  _bordaSenha(_senhaController, 'Digite sua senha'),
+                  const SizedBox(height: 20),
+                  _criarBotaoEsqueciSenha(),
+                  const SizedBox(height: 20),
+                  _criarBotao('ENTRAR', const Color.fromARGB(255, 0, 105, 55),
+                      () {
+                    print('Entrar Clicado');
+                  }),
+                ],
+              ),
+              const Spacer(flex: 2),
+            ],
           ),
         ),
       ),
@@ -105,15 +109,15 @@ class Aplicativo extends StatelessWidget {
     return _bordaa(
       child: TextField(
         controller: controller,
-        obscureText: !_mostrarSenha,
+        obscureText: _essasenha,
         decoration: InputDecoration(
           labelText: label,
           border: InputBorder.none,
           suffixIcon: IconButton(
-            icon: Icon(_mostrarSenha ? Icons.visibility : Icons.visibility_off),
+            icon: Icon(_essasenha ? Icons.visibility : Icons.visibility_off),
             onPressed: () {
               setState(() {
-                _mostrarSenha = !_mostrarSenha;
+                _essasenha = !_essasenha;
               });
             },
           ),
@@ -183,6 +187,19 @@ class Aplicativo extends StatelessWidget {
       ),
     );
   }
-
-  void setState(Null Function() param0) {}
 }
+
+class Aplicativo extends StatelessWidget {
+  const Aplicativo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TelaLogin(),
+    );
+  }
+}
+
+//achar quem define a quantidade de linhas
+//criar pasta assets, criar pasta pra fontes e adicionar a pasta no pubspec yaml
